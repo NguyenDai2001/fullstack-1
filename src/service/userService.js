@@ -22,11 +22,26 @@ const createNewUser = async (email, name, passWord) => {
     let connection = await handleConnection();
     try {
         const [results] = await connection.query(
-            'INSERT INTO `users` (email,password,username) VALUES(?,?,?)', [email, name, passWordNew]
+            'INSERT INTO `users` (email,password,username) VALUES(?,?,?)', [email, passWordNew, name]
         );
     } catch (err) {
         console.log(err);
     }
 }
 
-module.exports = { createNewUser, hashPassWord };
+const selectUser = async () => {
+    let connection = await handleConnection();
+    let user = []
+    try {
+        const [results] = await connection.query(
+            'SELECT * FROM users'
+        );
+        user = [...results];
+        return user;
+    } catch (err) {
+        console.log(err);
+        return user;
+    }
+}
+
+module.exports = { createNewUser, hashPassWord, selectUser };
