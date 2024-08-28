@@ -8,9 +8,11 @@ const router = express.Router();
 
 const initWebRoutes = (app) => {
     router.get("/", homeController.handleHelleWord);
-    router.get("/use", homeController.handleUserPage);
+    router.get("/user", homeController.handleUserPage);
     router.post("/user/create-user", homeController.handleCreateNewUser);
-
+    router.post("/user/delete-user/:id", homeController.handleDeleteUser);
+    router.get("/update-user-page/:id", homeController.UpdatePage);
+    router.post("/user/update-user-page/:id", homeController.handleUpdatePage);
 
     return app.use("/", router);
 }

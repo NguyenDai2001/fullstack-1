@@ -24,11 +24,15 @@ const createNewUser = async (email, name, passWord) => {
         const [results] = await connection.query(
             'INSERT INTO `users` (email,password,username) VALUES(?,?,?)', [email, passWordNew, name]
         );
+        return results;
     } catch (err) {
         console.log(err);
+        return err;
     }
 }
 
+
+// select all
 const selectUser = async () => {
     let connection = await handleConnection();
     let user = []
@@ -43,5 +47,51 @@ const selectUser = async () => {
         return user;
     }
 }
+// select by id
+const selectById = async (id) => {
+    let user = {}
+    let connection = await handleConnection();
+    try {
+        const [results] = await connection.query(
+            'SELECT * FROM users WHERE id=?', [id]
+        );
+        user = { ...results[0] }
+        return user;
+    } catch (err) {
+        console.log(err);
+        return err;
+    }
+}
 
-module.exports = { createNewUser, hashPassWord, selectUser };
+
+
+// delete user
+const deleteUser = async (id) => {
+    let connection = await handleConnection();
+    try {
+        const [results] = await connection.query(
+            'DELETE FROM users WHERE id=?', [id]
+        );
+        return results;
+    } catch (err) {
+        console.log(err);
+        return err;
+    }
+}
+
+// Update data user
+const updateUser = async (email, name, id) => {
+    let connection = await handleConnection();
+    try {
+        const [results] = await connection.query(
+            'UPDATE users SET email = ?, username = ? WHERE id=?', [email, name, id]
+        );
+        return results;
+    } catch (err) {
+        console.log(err);
+        return err;
+    }
+}
+
+
+module.exports = { createNewUser, hashPassWord, selectUser, selectById, deleteUser, updateUser };
